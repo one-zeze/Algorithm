@@ -3,82 +3,62 @@ package class02;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
-//백준 18111번
 public class MineCraft {
-    public static void main(String[] args) throws IOException{
-
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        var input = br.readLine().split(" ");
-        int h = Integer.parseInt(input[0]);
-        int w = Integer.parseInt(input[1]);
-        int block = Integer.parseInt(input[2]);
-        int[][] ground = new int[h][w];
-
-        Map<Integer, Integer> groundHeight = new HashMap<>();
-
-        //2차배열 입력값으로 채우기
-        for (int i=0; i<h; i++){
-            var newLine = br.readLine().split(" ");
-
-            for (int j=0; j< newLine.length; j++){
-                var item = Integer.parseInt(newLine[j]);
-                ground[i][j] = item;
-
-                //땅 높이별로 개수 파악
-                int hvalue = groundHeight.getOrDefault(item, 0);
-                groundHeight.put(item, hvalue+1);
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        Integer row = Integer.parseInt(st.nextToken());
+        Integer col = Integer.parseInt(st.nextToken());
+        Integer block = Integer.parseInt(st.nextToken());
+        int[][] ground = new int[row][col];
+        int min = 256;
+        int max = 0;
+        //블록 최대,최소 높이 구하기
+        for (int i = 0; i < row; i++) {
+            st = new StringTokenizer(br.readLine());
+            for (int j = 0; j < col; j++) {
+                ground[i][j] = Integer.parseInt(st.nextToken());
+                if (ground[i][j] < min) {
+                    min = ground[i][j];
+                }
+                if (ground[i][j] > max) {
+                    max = ground[i][j];
+                }
             }
         }
-        System.out.println(groundHeight);
 
-        //배열 확인
-        for (var height:ground){
-            for (var width:height){
-                System.out.print(width+" ");
+        int min_time = 1000000000;
+        int max_height = 0;
+        Loop1:
+        for (int height = min; height <= max; height++) {
+            int del_count = 0;
+            int ins_count = 0;
+            int temp_b = block;
+            for (int i = 0; i < row; i++) {
+                for (int j = 0; j < col; j++) {
+
+                    if (ground[i][j] < height) {
+                        ins_count += height - ground[i][j];
+                        temp_b -= height - ground[i][j];
+
+                    } else if (ground[i][j] > height) {
+                        del_count += ground[i][j] - height;
+                        temp_b += ground[i][j] - height;
+                    }
+                }
             }
-            System.out.println();
+            if (temp_b < 0) {
+                continue Loop1;
+            }
+            int time = del_count * 2 + ins_count;
+            if (time <= min_time && height >= max_height) {
+                min_time = time;
+                max_height = height;
+            }
         }
 
-
-        int maxHeight = 0;
-        int minHeight = 0;
-        for (var height:groundHeight.keySet()){
-            if (height > maxHeight){
-                maxHeight = height;
-            }
-        }
-        System.out.println("maxH : "+maxHeight);
-        int maxGroundNum = groundHeight.get(maxHeight);
-
-        for (var height:groundHeight.keySet()){
-            if (height!=maxHeight){
-                minHeight = height;
-            }
-        }
-        System.out.println("minH : "+minHeight);
-        int minGroundNum = groundHeight.get(minHeight);
-
-        int plusTime = 1*minGroundNum;
-        int minusTime = 2*maxGroundNum;
-
-        int fixTime = 0;
-        int finalHeight = 0;
-        if (maxGroundNum > minGroundNum){
-            if (block >= minGroundNum && plusTime != minusTime){
-                fixTime = 1*minGroundNum;
-                finalHeight = maxHeight;
-            }else{
-                fixTime = 2*maxGroundNum;
-                finalHeight = minHeight;
-            }
-        }else{
-            fixTime = 2*maxGroundNum;
-            finalHeight = minHeight;
-        }
-        System.out.println(fixTime+" "+finalHeight);
-
+        System.out.println(min_time + " " + max_height);
     }
 }

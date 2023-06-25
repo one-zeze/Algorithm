@@ -27,9 +27,10 @@ public class Main_18111 {
             }
         }
         //배열 확인
-//        printGround(ground);
+        printGround(ground);
         delBlock(ground, row, col, block);
     }
+
 
     public static void printGround(int[][] ground){
         for (var index:ground){
@@ -103,9 +104,11 @@ public class Main_18111 {
 
         }
 //        System.out.println(resultMap.entrySet());
+
         var entrySet = resultMap.entrySet();
         var valueSet = resultMap.values();
         var minTime = Collections.min(valueSet);
+//        System.out.println("minTime:"+minTime);
 
         int resultH = 0;
         int resultT = 0;
