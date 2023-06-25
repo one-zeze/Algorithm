@@ -3,6 +3,7 @@ package class02;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,11 +27,9 @@ public class Main_18111 {
             }
         }
         //배열 확인
-        printGround(ground);
-        var result = delBlock(ground, row, col, block);
-        System.out.println(result[0]+" "+result[1]);
+//        printGround(ground);
+        delBlock(ground, row, col, block);
     }
-
 
     public static void printGround(int[][] ground){
         for (var index:ground){
@@ -41,11 +40,11 @@ public class Main_18111 {
         }
     }
 
-    public static int[] delBlock(int[][] ground, int row, int col, int block){
+    public static void delBlock(int[][] ground, int row, int col, int block){
         //블록 높이별 개수 파악
         Map<Integer, Integer> resultMap = new HashMap<>();
         Map<Integer, Integer> map = new HashMap<>();
-        int[] resultList = new int[2];
+
         for (var index:ground) {
             for (var item : index) {
                 int value = map.getOrDefault(item, 0);
@@ -74,6 +73,7 @@ public class Main_18111 {
                 }
             }
         }
+//        System.out.println("needBlock:"+needBlock);
         
         //각 높이를 기준으로 블럭을 제거해보기
         for (var key:heightSet){
@@ -85,29 +85,40 @@ public class Main_18111 {
                 for (int j=0; j<col; j++){
 
                     //기준인 높이보다 작으면 -> 블록쌓기
-                    if (ground[i][j]<key && needBlock > block){
+                    if (ground[i][j]<key && block >= needBlock){
                         time += (key-ground[i][j]);
                     }
-                    else {
-                        time += (ground[i][j]-key)*2;
-                    }
-                    //기준인 높이보다 크면 -> 블록제거
-//                    else if (ground[i][j]>key) {
+//                    else {
 //                        time += (ground[i][j]-key)*2;
 //                    }
+                    //기준인 높이보다 크면 -> 블록제거
+                    else if (ground[i][j]>key) {
+                        time += (ground[i][j]-key)*2;
+                    }
                 }
             }
-//            System.out.println(key+", "+time);
-            resultMap.put(key, Math.abs(time));
-            if (key>resultList[0] && Math.abs(time) <resultList[1]){
-                resultList[0] = key;
-                resultList[1] = Math.abs(time);
+            if (time != 0){
+                resultMap.put(key, Math.abs(time));
             }
-            System.out.println(resultList[0]+" "+resultList[1]);
-        }
 
+        }
 //        System.out.println(resultMap.entrySet());
-        return resultList;
+        var entrySet = resultMap.entrySet();
+        var valueSet = resultMap.values();
+        var minTime = Collections.min(valueSet);
+
+        int resultH = 0;
+        int resultT = 0;
+        for (var entry:entrySet){
+            int key = entry.getKey();
+            int val = entry.getValue();
+
+            if (key >= resultH && val == minTime) {
+                resultH = key;
+                resultT = val;
+            }
+        }
+        System.out.println(resultT+" "+resultH);
     }
 
 }
