@@ -22,7 +22,6 @@ public class Main_1654 {
             }
         }
 
-
         // 반드시 max에서 +1 값이어야 한다.
         max++;
 
@@ -38,7 +37,6 @@ public class Main_1654 {
             long count = 0;
 
             // 구해진 중간 길이로 잘라서 총 몇 개가 만들어지는지를 구한다.
-
             for (int i = 0; i < arr.length; i++) {
                 count += (arr[i] / mid);
             }
@@ -56,8 +54,6 @@ public class Main_1654 {
             else {
                 min = mid + 1;
             }
-
-
         }
 
         // UpperBound로 얻어진 값(min)에 -1이 최대 길이가 된다.

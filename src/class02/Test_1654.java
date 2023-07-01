@@ -14,8 +14,8 @@ public class Test_1654 {
         int N = Integer.parseInt(input[1]);
         int[] lenList = new int[K];
         for (int i=0; i<K; i++){
-            Long length = Long.parseLong(br.readLine());
-            lenList[i] = Math.toIntExact(length);
+            int length = Integer.parseInt(br.readLine());
+            lenList[i] = length;
         }
 
         while (true){
