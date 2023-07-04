@@ -55,7 +55,7 @@ public class Main_1966 {
             max = Collections.max(queue);
             min = Collections.min(queue);
             if (max == targetImp && min == targetImp){
-                return cnt+(queue.size()-add-targetSeq);
+                return cnt+targetSeq-1;
             }
 
             int front = queue.peek();
@@ -69,6 +69,12 @@ public class Main_1966 {
                 queue.poll();
                 queue.add(front);
                 add++;
+
+                if (targetSeq > 0){
+                    targetSeq--;
+                }else{
+                    targetSeq = queue.size()-1;
+                }
             }
         }
 
