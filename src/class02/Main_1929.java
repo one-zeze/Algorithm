@@ -29,7 +29,7 @@ public class Main_1929 {
         for (int i=2; i<max; i++){
 
             if (result[i] != 0){
-                for (int j=i*i; j<=max; j+=i){
+                for (int j=i+i; j<=max; j+=i){
                     result[j] = 0;
                 }
             }
