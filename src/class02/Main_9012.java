@@ -12,7 +12,7 @@ public class Main_9012 {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int T = Integer.parseInt(br.readLine());
         Stack<String> stack;
-        
+
         for (int i=0; i<T; i++){
             stack = new Stack<>();
             String[] input = br.readLine().split("");
