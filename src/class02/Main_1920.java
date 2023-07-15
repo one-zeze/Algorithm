@@ -24,34 +24,30 @@ public class Main_1920 {
         int M = Integer.parseInt(br.readLine());
         var M_List = br.readLine().split(" ");
 
-        int start = 0;
-        int end = N-1;
-        int mid = (start + end)/2;
-        int index = 0;
-        while (index<M){
-            int num = Integer.parseInt(M_List[index]);
-            if (mid > M-1){
+        for (int i=0; i<M; i++){
+            int start = 0;
+            int end = N-1;
+
+            boolean notExist = true;
+            //이분탐색
+            while (start <= end){
+                int num = Integer.parseInt(M_List[i]);
+                int mid = (start + end)/2;
+
+                if (num == parsingN[mid]){
+                    notExist = false;
+                    sb.append(1).append("\n");
+                    break;
+                }
+                else if (num > parsingN[mid]){
+                    start = mid+1;
+                }
+                else{
+                    end = mid-1;
+                }
+            }
+            if (notExist){
                 sb.append(0).append("\n");
-                mid = (start + end)/2;
-                index++;
-                continue;
-            }
-
-            if (num == parsingN[mid]){
-                sb.append(1).append("\n");
-                index++;
-                mid = (start + end)/2;
-                continue;
-            }
-
-            if (num > parsingN[mid]){
-               mid++;
-               continue;
-            }
-
-            if (num < parsingN[mid]){
-                mid--;
-                continue;
             }
         }
 
