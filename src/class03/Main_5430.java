@@ -1,71 +1,67 @@
 package class03;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
+import java.io.*;
+import java.util.ArrayDeque;
 
 public class Main_5430 {
     public static void main(String[] args) throws IOException {
-        long bTime = System.currentTimeMillis();
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringBuilder sb = new StringBuilder();
+
         int N = Integer.parseInt(br.readLine()); // 테스트 케이스 개수
         while (N-->0){
 
             String p = br.readLine(); // 수행할 함수
             int n = Integer.parseInt(br.readLine()); // 배열에 든 수의 개수
-            var input = br.readLine(); // 입력받은 배열
+            String input = br.readLine(); // 입력받은 배열
 
+            String result = getResult(p, input).replace(" ", "");
+            sb.append(result).append("\n");
             // 숫자만 빼고 제거
-            String remove = "[^0-9]";
-            input = input.replaceAll(remove, "");
-
-            sb.append(getResult(n, p, input)).append("\n");
+            //input = input.replaceAll("[^0-9]", "");
         }
-        System.out.print(sb);
-        long aTime = System.currentTimeMillis();
-        long diffTime = (aTime-bTime)/1000;
-        System.out.println(diffTime);
+        System.out.println(sb);
     }
 
-    static String getResult(int n, String p, String input){
+    static String getResult(String p, String input){
+        ArrayDeque<Integer> deque = new ArrayDeque<>();
         StringBuilder sb = new StringBuilder();
-        String result = "";
-        ArrayList<Integer> parseList = new ArrayList<>();
-        for (int idx=0; idx<n; idx++){
-            int target = Character.getNumericValue(input.charAt(idx));
-            parseList.add(target);
+
+        String[] str = input.substring(1, input.length()-1).split(",");
+        if (!str[0].equals("")){
+            for (int i=0; i<str.length; i++){
+                int item = Integer.parseInt(str[i]);
+                deque.add(item);
+            }
         }
 
         for (int i=0; i<p.length(); i++){
-            var method = p.charAt(i);
+            Character method = p.charAt(i);
 
             switch (method){
                 case 'R':
-                    ArrayList<Integer> reverse = new ArrayList<>();
-                    for (int j= parseList.size()-1; j>=0; j--){
-                        reverse.add(parseList.get(j));
+                    ArrayDeque<Integer> reverse = new ArrayDeque<>();
+                    while (!deque.isEmpty()){
+                        reverse.add(deque.pollLast());
                     }
-                    parseList = reverse;
+                    deque = reverse;
                     break;
+
                 case 'D':
-                    if (parseList.isEmpty()){
-                        return "error";
+                    if (deque.isEmpty()){
+                       return "error";
                     }else{
-                        parseList.remove(0);
+                        deque.pollFirst();
                     }
                     break;
             }
         }
         sb.append("[");
-        for (var item:parseList){
+        for (var item:deque){
             sb.append(item).append(",");
         }
         sb.deleteCharAt(sb.length()-1);
         sb.append("]");
-
-        result = sb.toString();
-        return result;
+        return sb.toString();
     }
 }
