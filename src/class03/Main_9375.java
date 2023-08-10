@@ -16,10 +16,10 @@ public class Main_9375 {
         Map<String, Integer> map;
         while (T-- > 0){
             int N = Integer.parseInt(br.readLine());
-            if (N==0){
-                sb.append(0).append("\n");
-                continue;
-            }
+//            if (N==0){
+//                sb.append(0).append("\n");
+//                continue;
+//            }
 
             map = new HashMap<>();
             for (int i=0; i<N; i++){
@@ -33,17 +33,12 @@ public class Main_9375 {
                 sb.append(N).append("\n");
             }
             else{
-                int result = 0;
-                for (var key:map.keySet()){
-                    int val = map.get(key);
+                int result = 1;
+                for (var value:map.values()){
 
-                    for (var next:map.keySet()){
-                        if (!key.equals(next)){
-                            result += (val*map.get(next));
-                        }
-                    }
+                    result *= (value+1);
                 }
-                sb.append(N+result).append("\n");
+                sb.append(result-1).append("\n");
             }
         }
 
