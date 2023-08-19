@@ -22,14 +22,23 @@ public class Main_1012 {
                 cabbage[Integer.parseInt(position[0])][Integer.parseInt(position[1])] = true;
             }
 
-            int result = worm(cabbage);
-        }
+            if (K==1){
+                System.out.println(1);
+            } else{
+                System.out.println(worm(cabbage, K));
+            }
 
+        }
     }
 
-    public static int worm(boolean[][] field){
-        
+    public static int worm(boolean[][] field, int K){
+        //첫배추에서 방문하지 않은 인접한 배추로 이동
+        //이동한 배추에서 방문하지 않은 인접한 배추로 이동
+        //반복
+        //더이상 방문하지 않은 인접한 배추가 없으면, 벌레+1
+        //배추방문 여부가 true로 바뀔때마다 K-1
+        int cnt = 0;
 
-        return 0;
+        return cnt;
     }
 }
