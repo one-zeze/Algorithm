@@ -5,32 +5,57 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class Main_2630 {
+    static int white = 0;
+    static int blue = 0;
+    static String[][] paper;
+
     public static void main(String[] args) throws IOException {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int N = Integer.parseInt(br.readLine());
-        String paper = "";
+        paper = new String[N][N];
 
         for (int i=0; i<N; i++){
-            paper += br.readLine().replace(" ", "") + "\n";
-        }
-        System.out.println(paper);
-        // 파란색 흰색 둘다 아닌경우
-        if (paper.contains("0") && paper.contains("1")){
-            // N/2 * N/2로 잘라야됨
-            solve();
+            paper[i] = br.readLine().split(" ");
 
-        }else{ // 처음부터 하나의 색인 경우
-            if (paper.contains("0")){
-                System.out.println("1\n0");
-            }else{
-                System.out.println("0\n1");
-            }
         }
+
+        solve(0, 0, N);
+        System.out.println(white+"\n"+blue);
+    }
+
+    public static void solve(int row, int col, int size){
+
+        if (colorCheck(row, col, size)){
+            if (paper[row][col].equals("0")){
+                white++;
+            }
+            else{
+                blue++;
+            }
+            return;
+        }
+
+        int partiation = size/2;
+        solve(row, col, partiation); //2사분면
+        solve(row+partiation, col, partiation); //3사분면
+        solve(row, col+partiation, partiation); //1사분면
+        solve(row+partiation, col+partiation, partiation); //4사분면
 
     }
 
-    public static void solve(){
+    public static boolean colorCheck(int row, int col, int size){
+        String color = paper[row][col]; //첫 번째 index 값
 
+        for (int i=row; i<row+size; i++){
+            for (int j=col; j<col+size; j++){
+
+                if (!paper[i][j].equals(color)){ //색이 다르면 false 리턴
+                    return false;
+                }
+            }
+        }
+        
+        return true; //색이 같음
     }
 }
