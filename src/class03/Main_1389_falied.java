@@ -8,8 +8,9 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 
-public class Main_1389 {
+public class Main_1389_falied {
     private static int[][] users;
+    private static boolean[] visit;
     static int N, M;
 
     public static void main(String[] args) throws IOException {
@@ -55,11 +56,8 @@ public class Main_1389 {
     private static int kevin_bacon(int start){
         int cnt=0;
         for (int i=1; i<=N; i++){
-            if (start==i){continue;}
-            if (users[start][i]==1){ //친구관계
-                cnt++;
-            }
-            else{
+            visit = new boolean[N+1];
+            if (start!=i){
                 cnt += bfs(start, i);
             }
         }
@@ -68,14 +66,13 @@ public class Main_1389 {
 
     private static int bfs(int start, int end){
         int cnt=0;
-        boolean[] visit = new boolean[N+1];
         Queue<Integer> queue = new LinkedList<>();
-
-        queue.add(start);
         visit[start] = true;
+        queue.add(start);
 
         while (!queue.isEmpty()){
             int node = queue.poll();
+
             if (node == end){
                 return cnt;
             }
@@ -83,9 +80,10 @@ public class Main_1389 {
                 if (!visit[i] && users[node][i]==1){ //방문하지 않았고, 연결된 노드
                     visit[i] = true;
                     queue.offer(i);
+                    cnt++;
+                    break;
                 }
             }
-            cnt++;
         }
 
         return cnt;
