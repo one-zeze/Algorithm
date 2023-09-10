@@ -1,4 +1,4 @@
-package class03;
+package unit_test;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
