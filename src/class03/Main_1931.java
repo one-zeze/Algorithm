@@ -9,30 +9,52 @@ public class Main_1931 {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int N = Integer.parseInt(br.readLine());
+        /*
+        time[][0] 회의시작
+        time[][1] 회의종료
+        */
+        int[][] time = new int[N][2];
 
-        Map<Integer, Integer> timeMap = new HashMap<>();
-        while (N-->0){
-            String[] input = br.readLine().split(" ");
-            int start = Integer.parseInt(input[0]);
-            int end = Integer.parseInt(input[1]);
+        StringTokenizer st;
+        for (int i=0; i<N; i++){
+            st = new StringTokenizer(br.readLine(), " ");
+            time[i][0] = Integer.parseInt(st.nextToken());
+            time[i][1] = Integer.parseInt(st.nextToken());
+        }
 
-            if (timeMap.get(start) != null){
-                int oldValue = timeMap.get(start);
-                if (end<oldValue){
-                    timeMap.put(start, end);
+        Arrays.sort(time, new Comparator<int[]>(){
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                if (o1[1] == o2[1]){
+                    //종료시간이 같으면 시작이 빠른순으로 정렬
+                    return o1[0]-o2[0];
                 }
-            }else{
-                timeMap.put(start, end);
+
+                return o1[1]-o2[1];
+            }
+        });
+
+        int cnt=0;
+        int prev_end = 0;
+        for (int i=0; i<N; i++){
+            //이전 회의 종료시간 <= 회의 시작시간 이면, 이전회의 갱신
+            if (prev_end <= time[i][0]){
+                prev_end = time[i][1];
+                cnt++;
             }
         }
-        // input end
-        // 회의시작 시간 리스트 변환후 정렬
-        List<Integer> start  = new ArrayList<>(timeMap.keySet());
-        Collections.sort(start);
+        System.out.println(cnt);
 
-        for (int k:start){
-            System.out.print(timeMap.get(k)+" ");
-        }
+        //i번째, i+1번째 회의 끝나는 시간 이후로 가능한 회의 개수 카운트
+        //cnt(i) < cnt(i+1) 라면? -> i번째 회의 확정
+        //cnt(i) > cnt(i+1) 라면? -> i+1번째 회의 확정
+        //cnt(i) == cnt(i+1) 라면? -> continue
+        //i+2번째, i+3번째 비교 .......N-2번째, N-1번째 비교
+
+        //cnt()
+        //i번째 끝나는 시간과 i+1번째 시작하는 시간 비교
+        //안겹치면 continue
+        //겹치면? ->
 
     }
 }
