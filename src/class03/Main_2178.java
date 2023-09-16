@@ -8,18 +8,29 @@ import java.util.Queue;
 import java.util.StringTokenizer;
 
 // 최소경로 문제 (BFS)
+class Coor{
+    public int x;
+    public int y;
+
+    public Coor(int x, int y){
+        this.x = x;
+        this.y = y;
+    }
+}
 public class Main_2178 {
     private static Integer[][] maze;
-    private static boolean[][] visit;
+    private static Integer[][] visit;
+    private static int N;
+    private static int M;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine(), " ");
 
-        int N = Integer.parseInt(st.nextToken());
-        int M = Integer.parseInt(st.nextToken());
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
         maze = new Integer[N+1][M+1];
-        visit = new boolean[N+1][M+1];
+        visit = new Integer[N+1][M+1];
 
         for (int i=1; i<=N; i++){
             String[] input = br.readLine().split("");
@@ -28,23 +39,25 @@ public class Main_2178 {
             }
         }
         // input end
-        for (var c:maze){
-            for (var r:c){
-                System.out.print(r+" ");
-            }
-            System.out.println();
+        bfs(new Coor(1, 1), new Coor(N, M));
+        System.out.println(visit[N][M]);
+    }
+
+    private static void bfs(Coor start, Coor end){
+        Queue<Coor> queue = new LinkedList<>();
+        int x = start.x;
+        int y = start.y;
+        int count = 1;
+        visit[x][y] = count;
+        queue.offer(start);
+
+        int[] moveX = {1,-1,0,0};
+        int[] moveY = {0,0,1,-1};
+        while (!queue.isEmpty()){
+            Coor crt_coor = queue.poll();
+
         }
 
     }
 
-    private static int bfs(int start_x, int start_y){
-        Queue<Integer> queue = new LinkedList<>();
-        visit[start_x][start_y] = true;
-        // node class?....need??
-
-        int count=0;
-
-
-        return count;
-    }
 }
