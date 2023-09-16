@@ -19,7 +19,7 @@ class Coor{
 }
 public class Main_2178 {
     private static Integer[][] maze;
-    private static Integer[][] visit;
+    private static boolean[][] visit;
     private static int N;
     private static int M;
 
@@ -27,10 +27,10 @@ public class Main_2178 {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine(), " ");
 
-        N = Integer.parseInt(st.nextToken());
-        M = Integer.parseInt(st.nextToken());
+        N = Integer.parseInt(st.nextToken()); //row
+        M = Integer.parseInt(st.nextToken()); //col
         maze = new Integer[N+1][M+1];
-        visit = new Integer[N+1][M+1];
+        visit = new boolean[N+1][M+1];
 
         for (int i=1; i<=N; i++){
             String[] input = br.readLine().split("");
@@ -40,22 +40,34 @@ public class Main_2178 {
         }
         // input end
         bfs(new Coor(1, 1), new Coor(N, M));
-        System.out.println(visit[N][M]);
+        System.out.println(maze[N][M]);
     }
 
     private static void bfs(Coor start, Coor end){
         Queue<Coor> queue = new LinkedList<>();
         int x = start.x;
         int y = start.y;
-        int count = 1;
-        visit[x][y] = count;
+        visit[x][y] = true;
         queue.offer(start);
 
         int[] moveX = {1,-1,0,0};
         int[] moveY = {0,0,1,-1};
         while (!queue.isEmpty()){
             Coor crt_coor = queue.poll();
+            int coorVal = maze[crt_coor.x][crt_coor.y]+1;
 
+            for (int i=0; i<4; i++){
+                int newX = crt_coor.x+moveX[i];
+                int newY = crt_coor.y+moveY[i];
+
+                if (newX>0 && newX<=N && newY>0 && newY<=M){
+                    if (!visit[newX][newY] && maze[newX][newY]!=0){
+                        queue.offer(new Coor(newX, newY));
+                        visit[newX][newY] = true;
+                        maze[newX][newY] = coorVal;
+                    }
+                }
+            }
         }
 
     }
