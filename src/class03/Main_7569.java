@@ -20,7 +20,7 @@ public class Main_7569 {
         }
     }
     private static int M, N, H;
-
+    private static Queue<coor> queue = new LinkedList<>();
     public static void main(String[] args) throws IOException {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -32,10 +32,8 @@ public class Main_7569 {
         tomato = new Integer[H][N][M];
         visit = new boolean[H][N][M];
 
-        int a,b,c; //bfs 시작점
-        a=b=c=0;
-        boolean isRipe = true; // 모든 토마토가 익은 경우
-        boolean noRipe = true; // 익은 토마토가 없는 경우
+        boolean isRipe = false; // 모든 토마토가 익은 경우
+        boolean noRipe = false; // 익은 토마토가 없는 경우
         for (int h=0; h<H; h++){ //층
             for (int n=0; n<N; n++){ //세로
                 String[] input = br.readLine().split(" ");
@@ -44,24 +42,22 @@ public class Main_7569 {
                     int t_status = Integer.parseInt(input[m]);
                     tomato[h][n][m] = t_status;
                     if (t_status==0){
-                        isRipe = false;
+                        isRipe = true;
                     }
                     if (t_status==1){
-                        noRipe = false;
-                        a=h;
-                        b=n;
-                        c=m;
+                        noRipe = true;
+                        queue.offer(new coor(h, n, m));
+                        visit[h][n][m] = true;
                     }
                 }
             }
         }
-        if (isRipe && !noRipe){ // 0이 하나도 없는 경우
+        //input end
+        if (!isRipe && noRipe){ // 0이 하나도 없는 경우
             System.out.println(0);
-        } 
-        else if (!isRipe && noRipe) { // 1이 하나도 없는 경우
-            System.out.println(-1);
         }
         else{
+            int result = bfs();
             for (int h=0; h<H; h++){ //층
                 for (int n=0; n<N; n++){ //세로
                     for (int m=0; m<M; m++){ //가로
@@ -72,16 +68,12 @@ public class Main_7569 {
                     }
                 }
             }
-            System.out.println(bfs(new coor(a, b, c)));
+            System.out.println(result);
         }
 
     }//main
 
-    private static int bfs(coor start){
-        Queue<coor> queue = new LinkedList<>();
-        queue.offer(start);
-        visit[start.h][start.n][start.m] = true;
-
+    private static int bfs(){
         int[] move_h = {1, -1, 0, 0, 0, 0};
         int[] move_x = {0, 0, -1, 1, 0, 0};
         int[] move_y = {0, 0, 0, 0, -1, 1};
@@ -96,7 +88,7 @@ public class Main_7569 {
                 int newM = crt.m + move_y[i];
 
                 if (newH>=0 && newH<H && newN>=0 && newN<N && newM>=0 && newM<M){
-                    if (!visit[newH][newN][newM] && tomato[newH][newN][newM]==0){
+                    if (!visit[newH][newN][newM] && tomato[newH][newN][newM]>=0){
                         days = tomato[newH][newN][newM] = tomato[crt.h][crt.n][crt.m]+1;
                         visit[newH][newN][newM] = true;
                         queue.offer(new coor(newH, newN, newM));
