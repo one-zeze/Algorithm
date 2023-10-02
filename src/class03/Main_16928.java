@@ -10,9 +10,9 @@ import java.util.Queue;
 
 public class Main_16928 {
     private static Integer[] board = new Integer[101];
-    private static boolean[] visit = new boolean[101];
-    private static Map<Integer, Integer> ladder = new HashMap<>();
-    private static Map<Integer, Integer> snake = new HashMap<>();
+    private static boolean[] isLadder = new boolean[101];
+    private static boolean[] isSnake = new boolean[101];
+    private static Map<Integer, Integer> ladderInfo = new HashMap<>();
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -23,56 +23,79 @@ public class Main_16928 {
         for (int i=1; i<=100; i++){
             board[i] = i;
         }
-        for (int i=1; i<=N; i++){
+        for (int i=1; i<=N; i++){ //ladder
             String[] linkInfo = br.readLine().split(" ");
             int start = Integer.parseInt(linkInfo[0]);
             int end = Integer.parseInt(linkInfo[1]);
-            ladder.put(start, end);
+//            isLadder[start] = true;
+            isLadder[start] = true;
+            ladderInfo.put(start, end);
         }
         for (int i=1; i<=M; i++){
             String[] linkInfo = br.readLine().split(" ");
             int start = Integer.parseInt(linkInfo[0]);
-            int end = Integer.parseInt(linkInfo[1]);
-            snake.put(start, end);
+            isSnake[start] = true;
         }
         //input end
         //ex) 사다리가 2-60, 21-99 일때 21로 가는게 더 빠름
-        int cnt = 0;
-        for (int i=1; i<100; i++){
+//        System.out.println(bfs());
+        bfs();
+        System.out.println(board[100]);
 
-            for (int j=1; j<=6; j++){
-                if (i+j >= 100){
-                    cnt++;
-                    i=100;
-                    break;
-                }
-//                visit[i+j] = true;
-                if (ladder.get(i+j)!=null){
-                    i = ladder.get(i+j);
-                    cnt++;
-                    break;
-                }
-            }
-            if (i>=100){break;}
-            for (int z=6; z>0; z--){
-                if (snake.get(i+z)==null){
-                    i+=z;
-                    cnt++;
-                    break;
-                }
-            }
-        }
-        System.out.println(cnt);
     }//main method
 
     private static void bfs(){
         Queue<Integer> queue = new LinkedList<>();
         queue.offer(1);
-        visit[1] = true;
 
         while (!queue.isEmpty()){
             int crt = queue.poll();
+            int min = 0; //not snake
+            for (int i=1; i<=6; i++){
+                if (!isSnake[crt+i]){
+                    min = crt+i;
+                }
 
+                if (isLadder[crt+i]){
+                    int end = ladderInfo.get(crt+i);
+                    board[end] = board[crt]+1;
+                }
+                board[crt+i] = board[crt]+1;
+            }
+            queue.offer(min);
         }
     }
+//    private static int bfs(){
+//        Queue<Integer> queue = new LinkedList<>();
+//        queue.offer(1);
+//
+//        int cnt = 0;
+//        while (!queue.isEmpty()){
+//            int crt = queue.poll();
+//            if (crt>=94){
+//                cnt++;
+//                break;
+//            }
+//            int max = 0;
+//            int min = 0;
+//            for (int i=1; i<=6; i++){
+//                if (isLadder[crt+i] && ladderInfo.get(crt+i)>max){
+//                    max = ladderInfo.get(crt+i);
+//                    continue;
+//                }
+//                if (!isSnake[crt+i]){ //snake 제외한 가장 큰값
+//                    min = crt+i;
+//                }
+//            }
+//
+//            if (max==0){
+//                queue.offer(min);
+//            }else{
+//                queue.offer(max);
+//            }
+//            cnt++;
+//        }
+//
+//        return cnt;
+//    }
 }//Main class
