@@ -17,7 +17,14 @@ public class Main_2448 {
                 tree[i][j] = ' ';
             }
         }
-        countingStar();
+        countingStar(0, N-1, N);
+
+        for (int i=0; i< tree.length; i++){
+            for (int j=0; j<tree[0].length; j++){
+                sb.append(tree[i][j]);
+            }
+            sb.append("\n");
+        }
 
         System.out.print(sb);
     }//main
@@ -30,13 +37,15 @@ public class Main_2448 {
     //별 시작점 : 1, 4, 7, 10.... : (3*N)-2
     //별 중간 : 2, 5, 8.... : (3*N)-1
     //별 바닥 : 3, 6, 9 .... : 3*N
-    private static void countingStar(){
-        for (int i=1; i<=(N/3); i++){
-            for (int j=1; j<=3; j++){
-                // (가로/2)+1 부터 '*' 시작
-
-            }
+    private static void countingStar(int x, int y, int N){
+        if (N==3){
+            tree[x][y] = '*';
+            tree[x+1][y-1] = tree[x+1][y+1] = '*';
+            tree[x+2][y-2] = tree[x+2][y-1] = tree[x+2][y] = tree[x+2][y+1] = tree[x+2][y+2] = '*';
+            return;
         }
-
+        countingStar(x,y,N/2);
+        countingStar(x+N/2,y-N/2,N/2);
+        countingStar(x+N/2,y+N/2,N/2);
     }
 }
