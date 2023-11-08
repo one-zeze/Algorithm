@@ -6,39 +6,46 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class Main_12865 {
-    static class Stuff {
-        int weight;
-        int V;
-
-        public Stuff(int weight, int v) {
-            this.weight = weight;
-            this.V = v;
-        }
-    }
-    private static Stuff[] list;
-
-
+    private static int[] W;
+    private static int[] V;
+    private static Integer[][] dp;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine(), " ");
 
         int N = Integer.parseInt(st.nextToken()); //물건 개수
         int K = Integer.parseInt(st.nextToken()); //최대 무게
-        list = new Stuff[N];
-
+        W = new int[N];
+        V = new int[N];
+        dp = new Integer[N][K+1];
 
         for (int i=0; i<N; i++){
             String[] input = br.readLine().split(" ");
-            int W = Integer.parseInt(input[0]); //물건 무게
-            int V = Integer.parseInt(input[1]); //가치
+            int w = Integer.parseInt(input[0]); //물건 무게
+            int v = Integer.parseInt(input[1]); //가치
 
-            list[i] = new Stuff(W, V);
+            W[i] = w;
+            V[i] = v;
         }
         //end input
-        fillBag(K);
+        System.out.print(fillBag(N-1, K));
     }
     
-    private static void fillBag(int K){
+    private static int fillBag(int i, int K){
         //탑다운으로 고민해보자
+        if (i<0){
+            return 0;
+        }
+
+        if (dp[i][K] == null){
+            if (W[i]>K){
+                dp[i][K] = fillBag(i-1, K);
+            }
+            else{
+                dp[i][K] = Math.max(fillBag(i-1, K), fillBag(i-1, K-W[i])+V[i]);
+            }
+        }
+
+        return dp[i][K];
     }
 }//class
