@@ -43,7 +43,6 @@ public class Main_12865 {
 //                dp[i][K] = fillBag(i-1, K);
 //            }
 //            else{
-//                //이부분 이해못함...ㅅ
 //                dp[i][K] = Math.max(fillBag(i-1, K), fillBag(i-1, K-W[i])+V[i]);
 //            }
 //        }
