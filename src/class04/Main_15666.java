@@ -29,7 +29,7 @@ public class Main_15666 {
         dfs(0,0);
 
         System.out.println(sb);
-    }//main
+    }//maindd
     private static void dfs(int idx, int len){
         if (len == M){
             for (int i:result){
