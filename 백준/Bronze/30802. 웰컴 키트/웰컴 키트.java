@@ -20,27 +20,17 @@ public class Main {
   }
   
   static void calc_T(String[] size_arr, int unit) {
+    // 그냥 반올림 계산 ㅎ ㅐ버리면 값 똑같다
+    // 또는 unit-1 값을 더해주면 정수 계산이 나누어 떨어지게 할 수 있다.
     int cnt = 0;
-
     for (int i = 0; i < size_arr.length; i++) {
-      
       int index = Integer.parseInt(size_arr[i]); // cnt of crt T - size
-
-      if (index > 0 && index < unit) {
-        cnt++;
-      }
-      else {
-        cnt += index / unit;
-        int rest = index % unit; // if rest is not 0 and less than unit -> cnt + 1;
-        if (rest != 0 && rest < unit) {
-          cnt++;
-        }  
-      }
-      
+      cnt += (index + unit - 1) / unit;
     }
-
-    System.out.println(cnt);
+      System.out.println(cnt);
   }
+
+    
 
   static void calc_P(int people, int unit) {
     int cnt = people / unit;
